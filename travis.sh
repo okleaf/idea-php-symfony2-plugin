@@ -9,6 +9,8 @@ elif [ "$PHPSTORM_ENV" == "2016.2" ]; then
     ideaVersion="2016.2.5"
 elif [ "$PHPSTORM_ENV" == "2016.2.1" ]; then
     ideaVersion="2016.2.5"
+elif [ "$PHPSTORM_ENV" == "2016.3" ]; then
+    ideaVersion="2016.3"
 elif [ "$PHPSTORM_ENV" == "eap" ]; then
     ideaVersion="163.5644.15"
 fi
@@ -100,6 +102,16 @@ elif [ "$PHPSTORM_ENV" == "2016.2.1" ]; then
     download "https://plugins.jetbrains.com/files/7303/27028/twig-162.1121.34.zip"
     unzip -qo $travisCache/twig-162.1121.34.zip -d ./plugins
 
+elif [ "$PHPSTORM_ENV" == "2016.3" ]; then
+
+    #php
+    download "https://plugins.jetbrains.com/files/6610/30410/php-163.7743.50.zip"
+    unzip -qo $travisCache/php-php-163.7743.50.zip -d ./plugins
+
+    #twig
+    download "https://plugins.jetbrains.com/files/7303/29512/twig-163.6110.10.zip"
+    unzip -qo $travisCache/twig-163.6110.10.ziz -d ./plugins
+
 elif [ "$PHPSTORM_ENV" == "eap" ]; then
 
     #php
@@ -133,16 +145,16 @@ cp $travisCache/webDeployment-0.1.zip ./plugins
 
 # Run the tests
 if [ "$1" = "-d" ]; then
-    ant -d -f build-test.xml -DIDEA_HOME=./idea
+    ant -v -d -f build-test.xml -DIDEA_HOME=./idea
 else
-    ant -f build-test.xml -DIDEA_HOME=./idea
+    ant -v -f build-test.xml -DIDEA_HOME=./idea
 fi
 
 # Was our build successful?
 stat=$?
 
 if [ "${TRAVIS}" != true ]; then
-    ant -f build-test.xml -q clean
+    ant -v -f build-test.xml -q clean
 
     if [ "$1" = "-r" ]; then
         rm -rf idea
